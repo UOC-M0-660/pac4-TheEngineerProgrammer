@@ -12,8 +12,6 @@ import org.koin.dsl.module
  */
 
 val uiModule = module {
-    // TODO: Init your UI Dependencies
-
     // LaunchViewModel example
     viewModel { LaunchViewModel(repository = get()) }
     viewModel { StreamsViewModel(get()) }
