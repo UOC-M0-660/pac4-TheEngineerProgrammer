@@ -11,7 +11,7 @@ import edu.uoc.pac4.ui.login.oauth.OAuthActivity
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
-
+//No veo la necesidad de un viewModel para esta actividad
 class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

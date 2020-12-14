@@ -25,18 +25,22 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
 import org.koin.android.ext.android.inject
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class ProfileActivity : AppCompatActivity() {
 
     private val TAG = "ProfileActivity"
 
     //private val twitchApiService = TwitchApiService(Network.createHttpClient(this))
-    private val userRepository by inject<UserRepository>()
+    //private val userRepository by inject<UserRepository>()
+    private val profileViewModel by viewModel<ProfileViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         // Get User Profile
+        observeUser()
+
         lifecycleScope.launch {
             getUserProfile()
         }
@@ -57,18 +61,29 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun getUserProfile() {
+    private fun observeUser(){
+        profileViewModel.user.observe(this){
+            it?.let { user ->
+                setUserInfo(user)
+            } ?: run {
+                showError(getString(R.string.error_profile))
+            }
+        }
+    }
+
+    private fun getUserProfile() {
         progressBar.visibility = VISIBLE
         // Retrieve the Twitch User Profile using the API
         try {
-            userRepository.getUser()?.let { user ->
-                // Success :)
-                // Update the UI with the user data
-                setUserInfo(user)
-            } ?: run {
-                // Error :(
-                showError(getString(R.string.error_profile))
-            }
+//            userRepository.getUser()?.let { user ->
+//                // Success :)
+//                // Update the UI with the user data
+//                setUserInfo(user)
+//            } ?: run {
+//                // Error :(
+//                showError(getString(R.string.error_profile))
+//            }
+            profileViewModel.getUser()
             // Hide Loading
             progressBar.visibility = GONE
         } catch (t: UnauthorizedException) {
@@ -77,18 +92,20 @@ class ProfileActivity : AppCompatActivity() {
     }
 
 
-    private suspend fun updateUserDescription(description: String) {
+    private fun updateUserDescription(description: String) {
         progressBar.visibility = VISIBLE
         // Update the Twitch User Description using the API
         try {
-            userRepository.updateUser(description)?.let { user ->
-                // Success :)
-                // Update the UI with the user data
-                setUserInfo(user)
-            } ?: run {
-                // Error :(
-                showError(getString(R.string.error_profile))
-            }
+//            userRepository.updateUser(description)?.let { user ->
+//                // Success :)
+//                // Update the UI with the user data
+//                setUserInfo(user)
+//            } ?: run {
+//                // Error :(
+//                showError(getString(R.string.error_profile))
+//            }
+            profileViewModel.updateUser(description)
+
             // Hide Loading
             progressBar.visibility = GONE
         } catch (t: UnauthorizedException) {
@@ -117,10 +134,11 @@ class ProfileActivity : AppCompatActivity() {
 //        SessionManager(this).clearAccessToken()
 //        SessionManager(this).clearRefreshToken()
 
-        val authenticationRepository = get<AuthenticationRepository>()
-        lifecycleScope.launch{
-            authenticationRepository.logout()
-        }
+        //val authenticationRepository = get<AuthenticationRepository>()
+//        lifecycleScope.launch{
+//            authenticationRepository.logout()
+//        }
+        profileViewModel.logout()
 
         // Close this and all parent activities
         finishAffinity()

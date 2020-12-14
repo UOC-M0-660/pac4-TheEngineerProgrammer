@@ -22,15 +22,19 @@ import edu.uoc.pac4.data.oauth.OAuthConstants
 import kotlinx.android.synthetic.main.activity_oauth.*
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.get
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class OAuthActivity : AppCompatActivity() {
 
     private val TAG = "StreamsActivity"
 
+    private val oAuthViewModel by viewModel<OAuthViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_oauth)
         launchOAuthAuthorization()
+        observeLogin()
     }
 
     private fun buildOAuthUri(): Uri {
@@ -135,9 +139,32 @@ class OAuthActivity : AppCompatActivity() {
 //            finish()
 //        }
 
-        val authenticationRepository = get<AuthenticationRepository>()
-        lifecycleScope.launch {
-            if (authenticationRepository.login(authorizationCode)){
+//        val authenticationRepository = get<AuthenticationRepository>()
+//        lifecycleScope.launch {
+//            if (authenticationRepository.login(authorizationCode)){
+//                progressBar.visibility = View.GONE
+//                // Restart app to navigate to StreamsActivity
+//                startActivity(Intent(this@OAuthActivity, LaunchActivity::class.java))
+//                finish()
+//            }else{
+//                // Show Error Message
+//                Toast.makeText(
+//                    this@OAuthActivity,
+//                    getString(R.string.error_oauth),
+//                    Toast.LENGTH_LONG
+//                ).show()
+//                // Restart Activity
+//                finish()
+//                startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
+//            }
+//        }
+
+        oAuthViewModel.login(authorizationCode)
+    }
+
+    private fun observeLogin(){
+        oAuthViewModel.isLoginSuccessful.observe(this){
+            if (it){
                 progressBar.visibility = View.GONE
                 // Restart app to navigate to StreamsActivity
                 startActivity(Intent(this@OAuthActivity, LaunchActivity::class.java))
@@ -145,15 +172,15 @@ class OAuthActivity : AppCompatActivity() {
             }else{
                 // Show Error Message
                 Toast.makeText(
-                    this@OAuthActivity,
-                    getString(R.string.error_oauth),
-                    Toast.LENGTH_LONG
+                        this@OAuthActivity,
+                        getString(R.string.error_oauth),
+                        Toast.LENGTH_LONG
                 ).show()
                 // Restart Activity
                 finish()
                 startActivity(Intent(this@OAuthActivity, OAuthActivity::class.java))
             }
         }
-
     }
+
 }
