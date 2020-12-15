@@ -1,19 +1,12 @@
 package edu.uoc.pac4.ui.streams
 
-import android.content.Intent
-import android.util.Log
-import android.widget.Toast
-import androidx.lifecycle.*
-import edu.uoc.pac4.R
-import edu.uoc.pac4.data.SessionManager
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import edu.uoc.pac4.data.network.UnauthorizedException
 import edu.uoc.pac4.data.streams.Stream
 import edu.uoc.pac4.data.streams.StreamsRepository
-import edu.uoc.pac4.data.streams.StreamsResponse
-import edu.uoc.pac4.ui.login.LoginActivity
-import kotlinx.android.synthetic.main.activity_streams.*
 import kotlinx.coroutines.launch
-import org.koin.android.ext.android.inject
 
 class StreamsViewModel(
         private val streamsRepository: StreamsRepository

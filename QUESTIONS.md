@@ -105,3 +105,22 @@ fun main(args: Array){
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    val car = Car(engine)  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    car.start()  
 }  
+
+
+### Análisis de código estático con Lint
+
+#### Ejecutar el Lint y hacer una lista de 5 errores o advertencias y explica en qué consisten y cómo resolverlos.
+Sinceramente no veo ninguno grave, son todos opcionales en mí opinión.
+1. ImageView sin contentDescriptión: android pide una descripción para las imágenes por la accesibilidad, no lo utilizo nunca, suelo resolverlo simplemente poniendo la descripción el titulo de la aplicación.
+2. Obsolete Gladle Dependency: las dependencias de gradle están obsoletas, simplemente cambiar a la versión más reciente.
+3. Unnecessary local variable: considera que la variable es inecesaria en la función. Por ejemplo creas una variable val a = 1 y luego haces return a. En este caso es preferible poner return 1 directamente.
+4. Unused import directive: se trata de imports no usados. Simplemente tiene que quitarlos (o dar a Optimize Imports). 
+
+
+Algunas que lo he ignorado porque no veo ninguna necesidad de cambiar:  
+1. No le gusta que la variable se llame TAG.
+2. Unused symbol, se trata de variables o clases o... no utilizados. Puede quitarlos si quiere, no los quito porque son TAGs que puede que los utilize en algún momento. En este caso lo detecta MyApp como no utilizado, esto es un fallo del propio Lint. 
+3. Los de proofreading. Se tratan de lo que lint considera faltas de ortografía. Si pones algo en español lo va a considerar como una falta de ortografía. 
+4. Unused XML schema declaration. Simplemente se trata que la línea xmlns:app="http://schemas.android.com/apk/res-auto" no es necesaria.
+5. Recursos no utilizados en colors, dimens y strings.  
+...

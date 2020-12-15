@@ -1,17 +1,5 @@
 package edu.uoc.pac4.data
 
-import android.util.Log
-import edu.uoc.pac4.data.network.Endpoints
-import edu.uoc.pac4.data.oauth.OAuthConstants
-import edu.uoc.pac4.data.oauth.OAuthTokensResponse
-import edu.uoc.pac4.data.network.UnauthorizedException
-import edu.uoc.pac4.data.streams.StreamsResponse
-import edu.uoc.pac4.data.user.User
-import edu.uoc.pac4.data.user.UsersResponse
-import io.ktor.client.*
-import io.ktor.client.features.*
-import io.ktor.client.request.*
-
 /**
  * Created by alex on 24/10/2020.
  */
